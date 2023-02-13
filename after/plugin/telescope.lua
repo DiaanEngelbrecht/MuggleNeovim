@@ -40,8 +40,8 @@ require('telescope').setup {
     }
   }
 }
-require("telescope").load_extension "file_browser"
-require 'telescope'.load_extension('project')
+require("telescope").load_extension("file_browser")
+require("telescope").load_extension("project")
 
 local ivy_theme = require('telescope.themes').get_ivy({
   hidden = true,
@@ -50,8 +50,10 @@ local ivy_theme = require('telescope.themes').get_ivy({
   }
 })
 
+local utils = require "telescope.utils"
 local project_files = function()
   local opts = ivy_theme -- define here if you want to define something
+  opts["cwd"] = utils.buffer_dir()
   vim.fn.system('git rev-parse --is-inside-work-tree')
   if vim.v.shell_error == 0 then
     require "telescope.builtin".git_files(opts)
@@ -62,7 +64,6 @@ end
 
 local builtin = require('telescope.builtin')
 
-local utils = require "telescope.utils"
 local themes = require('telescope.themes')
 vim.keymap.set('n', '<leader>ff', function()
   require "telescope".extensions.file_browser.file_browser(themes.get_ivy({
