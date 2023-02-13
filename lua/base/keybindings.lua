@@ -1,8 +1,8 @@
 vim.g.mapleader = " "
 
 vim.keymap.set("n", "<leader>fj", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>ft", "<cmd>:NvimTreeFocus<cr>")
 vim.keymap.set("n", "<leader>fs", "<cmd>:w<cr>")
-
 
 vim.keymap.set("n", "<leader>qq", "<cmd>:q<cr>")
 vim.keymap.set("n", "<leader><tab>", "<cmd>:b#<cr>")
@@ -11,8 +11,13 @@ vim.keymap.set("n", "f", "<cmd>:bn<cr>")
 vim.keymap.set("n", "s", "<cmd>:bp<cr>")
 
 vim.keymap.set("n", "<leader>tn", "<cmd>:FloatermNew --height=0.9 --width=0.9<cr>")
-vim.keymap.set("n", "<C-t>", "<cmd>:FloatermToggle<cr>")
-vim.keymap.set("t", "<C-t>", "<cmd>:FloatermToggle<cr>")
+vim.keymap.set("n", "<leader>tt", "<cmd>:FloatermToggle<cr>")
+
+vim.keymap.set("t", "<C-t>", "<cmd>:FloatermNew --height=0.9 --width=0.9<cr>")
+vim.keymap.set("t", "<C-k>", "<cmd>:FloatermToggle<cr>")
+vim.keymap.set("t", "<C-j>", "<cmd>:FloatermToggle<cr>")
+vim.keymap.set("t", "<C-l>", "<cmd>:FloatermNext<cr>")
+vim.keymap.set("t", "<C-h>", "<cmd>:FloatermPrev<cr>")
 
 vim.keymap.set("n", "<leader>w", "<C-w>")
 vim.keymap.set("n", "<leader>wd", "<C-w>c")
