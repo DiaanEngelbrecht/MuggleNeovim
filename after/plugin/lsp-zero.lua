@@ -21,3 +21,21 @@ lsp.setup_nvim_cmp({
 })
 
 lsp.setup()
+
+vim.keymap.set("n", "gd", function()
+  vim.lsp.buf.definition()
+end)
+
+vim.keymap.set("n", "gr", function ()
+  vim.lsp.buf.references()
+end)
+
+vim.keymap.set("n", "gl", function()
+  vim.diagnostic.open_float()
+end)
+
+vim.keymap.set("n", "<leader>la", function ()
+  vim.lsp.buf.code_action()
+end)
+
+
