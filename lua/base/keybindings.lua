@@ -29,7 +29,9 @@ end)
 
 vim.api.nvim_create_autocmd({"BufWinEnter"}, {
   callback = function(args)
-    BufStack:push_bubble(args.buf)
+    if vim.fn.buflisted(args.buf) then
+      BufStack:push_bubble(args.buf)
+    end
   end,
 })
 
