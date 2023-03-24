@@ -27,9 +27,11 @@ vim.keymap.set("n", "<leader>ft", function ()
       -- maybe close here? but I'd rather learn to use q
     else
       vim.cmd("NvimTreeFindFile")
+      view.focus()
     end
   else
       vim.cmd("NvimTreeFindFile")
+      view.focus()
   end
 end)
 
