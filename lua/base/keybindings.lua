@@ -1,15 +1,49 @@
+require("lib.stack")
+
 vim.g.mapleader = " "
 
 vim.keymap.set("n", "<leader>fj", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>fs", "<cmd>:w<cr>")
 
 vim.keymap.set("n", "<leader>qq", "<cmd>:q<cr>")
-vim.keymap.set("n", "<leader><tab>", "<cmd>:b#<cr>")
+
+vim.keymap.set("n", "<leader><C-o>", function()
+ local jl = vim.fn.getjumplist()
+  local currentJump = jl[2]
+  for i = currentJump, 0, -1 do
+    if jl[1][i]["bufnr"] ~= vim.fn.bufnr('%') then
+      vim.cmd([[execute "normal! ]]..(currentJump - i + 1)..[[\<c-o>"]])
+      break
+    end
+  end
+end)
+
+BufStack = BubbleStack:Create()
+
+vim.keymap.set("n", "<leader><tab>", function()
+  local len = BufStack:getn()
+  if len > 1 then
+    vim.api.nvim_set_current_buf(BufStack._et[len - 1])
+  end
+end)
+
+vim.api.nvim_create_autocmd({"BufWinEnter"}, {
+  callback = function(args)
+    BufStack:push_bubble(args.buf)
+  end,
+})
+
+vim.api.nvim_create_autocmd({"BufDelete", "BufWipeout"}, {
+  callback = function(args)
+    BufStack:remove(args.buf)
+  end,
+})
+
 vim.keymap.set("n", "<leader>bd", "<cmd>:bwipeout<cr>")
 vim.keymap.set("n", "f", "<cmd>:bn<cr>")
 vim.keymap.set("n", "s", "<cmd>:bp<cr>")
 
-vim.keymap.set("n", "<leader>t", function() 
+vim.keymap.set("n", "<leader>t", function()
   local current_buff = vim.fn['floaterm#buflist#curr']()
   if current_buff == -1 then
     vim.cmd(":FloatermNew --height=0.9 --width=0.9")
