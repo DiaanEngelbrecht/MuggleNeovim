@@ -15,3 +15,5 @@ vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
 vim.opt.scrolloff = 2
+
+vim.api.nvim_command('set clipboard=unnamedplus')

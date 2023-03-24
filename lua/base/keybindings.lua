@@ -9,8 +9,14 @@ vim.keymap.set("n", "<leader>bd", "<cmd>:bwipeout<cr>")
 vim.keymap.set("n", "f", "<cmd>:bn<cr>")
 vim.keymap.set("n", "s", "<cmd>:bp<cr>")
 
-vim.keymap.set("n", "<leader>tn", "<cmd>:FloatermNew --height=0.9 --width=0.9<cr>")
-vim.keymap.set("n", "<leader>tt", "<cmd>:FloatermToggle<cr>")
+vim.keymap.set("n", "<leader>t", function() 
+  local current_buff = vim.fn['floaterm#buflist#curr']()
+  if current_buff == -1 then
+    vim.cmd(":FloatermNew --height=0.9 --width=0.9")
+  else
+    vim.cmd(":FloatermToggle")
+  end
+end)
 
 vim.keymap.set("t", "<C-t>", "<cmd>:FloatermNew --height=0.9 --width=0.9<cr>")
 vim.keymap.set("t", "<C-k>", "<cmd>:FloatermToggle<cr>")
