@@ -30,7 +30,6 @@ end)
 vim.api.nvim_create_autocmd({"BufWinEnter"}, {
   callback = function(args)
     if vim.fn.buflisted(args.buf) == 1 then
-      print("Adding buffer number "..args.buf)
       BufStack:push_bubble(args.buf)
     end
   end,
