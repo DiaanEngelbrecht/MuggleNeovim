@@ -37,7 +37,9 @@ vim.api.nvim_create_autocmd({"BufWinEnter"}, {
 
 vim.api.nvim_create_autocmd({"BufDelete", "BufWipeout"}, {
   callback = function(args)
+    require'plenary.profile'.start("profile_buf_wipeout.log")
     BufStack:remove(args.buf)
+    require'plenary.profile'.stop()
   end,
 })
 
