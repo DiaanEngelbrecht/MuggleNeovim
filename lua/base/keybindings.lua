@@ -5,6 +5,12 @@ vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>fj", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>fs", "<cmd>:w<cr>")
 
+vim.keymap.set("n", "<leader>ll", "<cmd>:LspInfo<cr>")
+vim.keymap.set("n", "<leader>lf", function()
+  vim.lsp.buf.formatting()
+end)
+vim.keymap.set("n", "<leader>ls", "<cmd>:Mason<cr>")
+
 vim.keymap.set("n", "<leader>qq", "<cmd>:q<cr>")
 
 vim.keymap.set("n", "<leader><C-o>", function()
@@ -37,15 +43,11 @@ vim.api.nvim_create_autocmd({"BufWinEnter"}, {
 
 vim.api.nvim_create_autocmd({"BufDelete", "BufWipeout"}, {
   callback = function(args)
-    require'plenary.profile'.start("profile_buf_wipeout.log")
     BufStack:remove(args.buf)
-    require'plenary.profile'.stop()
   end,
 })
 
 vim.keymap.set("n", "<leader>bd", "<cmd>:bwipeout<cr>")
-vim.keymap.set("n", "f", "<cmd>:bn<cr>")
-vim.keymap.set("n", "s", "<cmd>:bp<cr>")
 
 vim.keymap.set("n", "<leader>t", function()
   local current_buff = vim.fn['floaterm#buflist#curr']()

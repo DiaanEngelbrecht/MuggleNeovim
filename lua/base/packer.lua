@@ -14,13 +14,6 @@ return require('packer').startup(function(use)
   use { "nvim-telescope/telescope-project.nvim" }
   use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
   use {
-    "folke/which-key.nvim",
-    config = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-    end
-  }
-  use {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v1.x',
     requires = {
