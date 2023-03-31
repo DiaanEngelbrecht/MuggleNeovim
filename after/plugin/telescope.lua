@@ -77,5 +77,6 @@ end, {})
 
 vim.keymap.set('n', '<leader>pf', project_files, {})
 vim.keymap.set('n', '<leader>/', function() builtin.live_grep(ivy_theme) end, {})
+vim.keymap.set('n', 'g/', function() builtin.grep_string() end, {})
 vim.keymap.set('n', '<leader>bb', function() builtin.buffers(ivy_theme) end, {})
 vim.keymap.set('n', '<leader>pp', function() require 'telescope'.extensions.project.project(ivy_theme) end, {})
