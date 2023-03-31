@@ -60,6 +60,7 @@ return require('packer').startup(function(use)
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
   use 'voldikss/vim-floaterm'
+  use 'emmanueltouzery/agitator.nvim'
   use {
     'nvim-tree/nvim-tree.lua',
     requires = {

@@ -77,5 +77,14 @@ local utils = require('telescope.utils')
 vim.keymap.set("n", "<leader>gs", function()
   neogit.open({ cwd = utils.buffer_dir() })
 end)
+vim.keymap.set("n", "<leader>gb", function()
+  -- require('agitator').git_blame()
+  require'agitator'.git_blame_toggle{
+    sidebar_width = 35,
+    formatter=function(r) return r.date.year .. "/" .. r.date.month .. "/" .. r.date.day .. ":".. r.author:sub(0,5) .. " - " .. r.summary; end}
+end)
+vim.keymap.set("n", "<leader>gt", function()
+  require('agitator').git_time_machine({use_current_win= true})
+end)
 
 vim.keymap.set("i", "fd", "<Esc>")
