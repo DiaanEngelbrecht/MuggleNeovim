@@ -7,7 +7,7 @@ vim.keymap.set("n", "<leader>fs", "<cmd>:w<cr>")
 
 vim.keymap.set("n", "<leader>ll", "<cmd>:LspInfo<cr>")
 vim.keymap.set("n", "<leader>lf", function()
-  vim.lsp.buf.formatting()
+  vim.lsp.buf.format()
 end)
 vim.keymap.set("n", "<leader>ls", "<cmd>:Mason<cr>")
 
