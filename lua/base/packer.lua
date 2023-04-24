@@ -13,6 +13,7 @@ return require('packer').startup(function(use)
   }
   use { "nvim-telescope/telescope-file-browser.nvim" }
   use { "nvim-telescope/telescope-project.nvim" }
+  use { "numToStr/Comment.nvim" }
   use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
   use {
     'VonHeikemen/lsp-zero.nvim',
