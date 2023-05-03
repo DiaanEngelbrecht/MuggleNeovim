@@ -66,10 +66,6 @@ vim.keymap.set("t", "<C-h>", "<cmd>:FloatermPrev<cr>")
 
 vim.keymap.set("n", "<leader>w", "<C-w>")
 vim.keymap.set("n", "<leader>wd", "<C-w>c")
-vim.keymap.set("n", "<C-j>", "<cmd>:winc j<cr>")
-vim.keymap.set("n", "<C-k>", "<cmd>:winc k<cr>")
-vim.keymap.set("n", "<C-h>", "<cmd>:winc h<cr>")
-vim.keymap.set("n", "<C-l>", "<cmd>:winc l<cr>")
 vim.keymap.set("n", "<leader>fc", "<cmd>:cd %:h<cr>")
 
 local neogit = require('neogit')

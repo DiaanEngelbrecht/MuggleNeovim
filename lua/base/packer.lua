@@ -7,6 +7,7 @@ return require('packer').startup(function(use)
   use 'ojroques/nvim-bufdel'
   use 'xiyaowong/transparent.nvim'
   use 'navarasu/onedark.nvim'
+  use 'christoomey/vim-tmux-navigator'
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.1',
     -- or                            , branch = '0.1.x',
@@ -38,7 +39,6 @@ return require('packer').startup(function(use)
       { 'rafamadriz/friendly-snippets' },
     }
   }
-  use { 'xiyaowong/transparent.nvim' }
   use {
     'glepnir/dashboard-nvim',
     event = 'VimEnter',
