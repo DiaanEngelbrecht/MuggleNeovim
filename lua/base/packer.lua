@@ -4,6 +4,7 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
+  use 'ojroques/nvim-bufdel'
   use 'xiyaowong/transparent.nvim'
   use 'navarasu/onedark.nvim'
   use {
@@ -51,8 +52,8 @@ return require('packer').startup(function(use)
     requires = { 'nvim-tree/nvim-web-devicons' }
   }
   use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
-  use { 
-    'TimUntersberger/neogit', 
+  use {
+    'TimUntersberger/neogit',
     requires = {
       'nvim-lua/plenary.nvim',
       'sindrets/diffview.nvim'

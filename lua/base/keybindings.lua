@@ -47,7 +47,7 @@ vim.api.nvim_create_autocmd({"BufDelete", "BufWipeout"}, {
   end,
 })
 
-vim.keymap.set("n", "<leader>bd", "<cmd>:bwipeout<cr>")
+vim.keymap.set("n", "<leader>bd", "<cmd>:BufDel<cr>")
 
 vim.keymap.set("n", "<leader>t", function()
   local current_buff = vim.fn['floaterm#buflist#curr']()
