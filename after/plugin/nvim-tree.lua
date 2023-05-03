@@ -74,6 +74,9 @@ end
 
 local config = {
     on_attach= on_attach,
+    update_focused_file = {
+      enable = true,
+    },
     actions = {
         open_file = {
             quit_on_open = false
