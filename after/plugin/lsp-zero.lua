@@ -20,6 +20,8 @@ lsp.setup_nvim_cmp({
   mapping = cmp_mappings
 })
 
+lsp.setup_servers({'dartls', force = true})
+
 lsp.setup()
 
 vim.keymap.set("n", "gd", function()
