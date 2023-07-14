@@ -1,5 +1,11 @@
-require('telescope').setup {
+local telescope = require('telescope')
+
+telescope.setup {
   defaults = {
+    file_ignore_patters = {
+      "node_moduels",
+      "target"
+    },
     -- Default configuration for telescope goes here:
     -- config_key = value,
     mappings = {
@@ -40,8 +46,8 @@ require('telescope').setup {
     }
   }
 }
-require("telescope").load_extension("file_browser")
-require("telescope").load_extension("project")
+telescope.load_extension("file_browser")
+telescope.load_extension("project")
 
 local ivy_theme = require('telescope.themes').get_ivy({
   hidden = true,
