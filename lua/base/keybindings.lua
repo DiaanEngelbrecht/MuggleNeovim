@@ -17,11 +17,11 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 
 vim.keymap.set("n", "<leader><C-o>", function()
- local jl = vim.fn.getjumplist()
+  local jl = vim.fn.getjumplist()
   local currentJump = jl[2]
   for i = currentJump, 0, -1 do
     if jl[1][i]["bufnr"] ~= vim.fn.bufnr('%') then
-      vim.cmd([[execute "normal! ]]..(currentJump - i + 1)..[[\<c-o>"]])
+      vim.cmd([[execute "normal! ]] .. (currentJump - i + 1) .. [[\<c-o>"]])
       break
     end
   end
@@ -34,9 +34,9 @@ vim.keymap.set("n", "<leader><tab>", function()
   if len > 1 then
     vim.api.nvim_set_current_buf(BufStack._et[len - 1])
   end
-end)
+end, { desc = "Switch to Other Buffer" })
 
-vim.api.nvim_create_autocmd({"BufWinEnter"}, {
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   callback = function(args)
     if vim.fn.buflisted(args.buf) == 1 then
       BufStack:push_bubble(args.buf)
@@ -44,13 +44,23 @@ vim.api.nvim_create_autocmd({"BufWinEnter"}, {
   end,
 })
 
-vim.api.nvim_create_autocmd({"BufDelete", "BufWipeout"}, {
+vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
   callback = function(args)
     BufStack:remove(args.buf)
   end,
 })
 
-vim.keymap.set("n", "<leader>bd", "<cmd>:BufDel<cr>")
+vim.keymap.set("n", "<leader>bd", function()
+  local current_buff = vim.api.nvim_get_current_buf()
+  if vim.fn.buflisted(current_buff) == 1 then
+    local len = BufStack:getn()
+    if len > 1 then
+      vim.api.nvim_set_current_buf(BufStack._et[len - 1])
+    end
+  end
+
+  vim.cmd(":BufDel " .. current_buff)
+end)
 
 vim.keymap.set("n", "<leader>t", function()
   local current_buff = vim.fn['floaterm#buflist#curr']()
@@ -78,12 +88,15 @@ vim.keymap.set("n", "<leader>gs", function()
 end)
 vim.keymap.set("n", "<leader>gb", function()
   -- require('agitator').git_blame()
-  require'agitator'.git_blame_toggle{
+  require 'agitator'.git_blame_toggle {
     sidebar_width = 35,
-    formatter=function(r) return r.date.year .. "/" .. r.date.month .. "/" .. r.date.day .. ":".. r.author:sub(0,5) .. " - " .. r.summary; end}
+    formatter = function(r)
+      return r.date.year ..
+          "/" .. r.date.month .. "/" .. r.date.day .. ":" .. r.author:sub(0, 5) .. " - " .. r.summary;
+    end }
 end)
 vim.keymap.set("n", "<leader>gt", function()
-  require('agitator').git_time_machine({use_current_win= true})
+  require('agitator').git_time_machine({ use_current_win = true })
 end)
 
 vim.keymap.set("i", "fd", "<Esc>")
