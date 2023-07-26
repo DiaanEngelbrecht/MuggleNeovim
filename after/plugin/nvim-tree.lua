@@ -81,7 +81,9 @@ local config = {
     custom = {
       "^\\.git"
     },
-    exclude = {},
+    exclude = {
+      ".gitignore"
+    },
   },
   update_focused_file = {
     enable = true,
