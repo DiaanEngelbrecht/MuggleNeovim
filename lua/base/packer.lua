@@ -8,6 +8,7 @@ return require('packer').startup(function(use)
   use 'xiyaowong/transparent.nvim'
   use 'navarasu/onedark.nvim'
   use 'christoomey/vim-tmux-navigator'
+  use { 'lukas-reineke/indent-blankline.nvim' }
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.1',
     -- or                            , branch = '0.1.x',
@@ -51,6 +52,8 @@ return require('packer').startup(function(use)
     end,
     requires = { 'nvim-tree/nvim-web-devicons' }
   }
+  use { 'rcarriga/nvim-notify' }
+  use { 'stevearc/dressing.nvim' }
   use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
   use {
     'TimUntersberger/neogit',
@@ -59,6 +62,7 @@ return require('packer').startup(function(use)
       'sindrets/diffview.nvim'
     }
   }
+  use { 'echasnovski/mini.nvim', branch = 'stable' }
   use {
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
