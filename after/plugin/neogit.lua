@@ -9,6 +9,7 @@ neogit.setup {
   use_telescope = true,
   kind = "split",
   integrations = {
+    telescope  = true,
     diffview = true
   },
   mappings = {
