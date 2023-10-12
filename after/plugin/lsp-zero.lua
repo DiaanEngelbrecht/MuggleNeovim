@@ -16,6 +16,12 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
   ["<tab>"] = cmp.mapping.complete(),
 })
 
+lsp.on_attach(function(client, bufnr)
+  -- see :help lsp-zero-keybindings
+  -- to learn the available actions
+  lsp.default_keymaps({buffer = bufnr})
+end)
+
 lsp.setup_nvim_cmp({
   mapping = cmp_mappings
 })
@@ -23,18 +29,6 @@ lsp.setup_nvim_cmp({
 lsp.setup_servers({'dartls', force = true})
 
 lsp.setup()
-
-vim.keymap.set("n", "gd", function()
-  vim.lsp.buf.definition()
-end)
-
-vim.keymap.set("n", "gr", function ()
-  vim.lsp.buf.references()
-end)
-
-vim.keymap.set("n", "gl", function()
-  vim.diagnostic.open_float()
-end)
 
 vim.keymap.set("n", "<leader>la", function ()
   vim.lsp.buf.code_action()
