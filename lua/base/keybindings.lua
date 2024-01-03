@@ -12,6 +12,7 @@ end)
 vim.keymap.set("n", "<leader>ls", "<cmd>:Mason<cr>")
 
 vim.keymap.set("n", "<leader>qq", "<cmd>:q<cr>")
+vim.keymap.set("n", "<leader>c", "<cmd>:%s/\r/<cr>")
 
 vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
