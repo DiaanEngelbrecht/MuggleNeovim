@@ -56,7 +56,7 @@ return require('packer').startup(function(use)
   use { 'stevearc/dressing.nvim' }
   use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
   use {
-    'TimUntersberger/neogit',
+    'NeogitOrg/neogit',
     requires = {
       'nvim-lua/plenary.nvim',
       'sindrets/diffview.nvim'

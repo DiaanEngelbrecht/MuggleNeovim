@@ -39,7 +39,9 @@ end, { desc = "Switch to Other Buffer" })
 
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   callback = function(args)
-    if vim.fn.buflisted(args.buf) == 1 then
+    -- vim.print("Entering buffer number " .. args.buf .. " buffer type is " .. vim.bo[args.buf].buftype)
+    if vim.fn.buflisted(args.buf) == 1 and vim.bo[args.buf].buftype == "" then
+      -- vim.print("Pushing buffer")
       BufStack:push_bubble(args.buf)
     end
   end,
@@ -47,13 +49,16 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
 
 vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
   callback = function(args)
-    BufStack:remove(args.buf)
+    if vim.fn.buflisted(args.buf) == 1 and vim.bo[args.buf].buftype == "" then
+      -- vim.print("Leaving buffer: " .. vim.inspect(args.buf))
+      BufStack:remove(args.buf)
+    end
   end,
 })
 
 vim.keymap.set("n", "<leader>bd", function()
   local current_buff = vim.api.nvim_get_current_buf()
-  if vim.fn.buflisted(current_buff) == 1 then
+  if vim.fn.buflisted(current_buff) == 1 and vim.bo[current_buff].buftype == "" then
     local len = BufStack:getn()
     if len > 1 then
       vim.api.nvim_set_current_buf(BufStack._et[len - 1])
