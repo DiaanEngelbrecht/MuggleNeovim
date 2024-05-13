@@ -33,7 +33,7 @@ local conditions = {
   end,
 }
 
-local custom_theme = require'lualine.themes.onedark'
+local custom_theme = require('lualine.themes.onedark')
 
 -- Config
 local config = {

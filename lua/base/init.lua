@@ -1,6 +1,6 @@
-require("base.packer")
-require("base.theme")
+require("base.lazy")
 require("base.keybindings")
+require("base.theme")
 require("base.set")
 
 vim.api.nvim_create_autocmd("FileType", {
