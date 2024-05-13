@@ -1,6 +1,7 @@
 require("lib.stack")
 
-vim.g.mapleader = " "
+local tree_api = require("nvim-tree.api")
+local tree_view = require("nvim-tree.view")
 
 vim.keymap.set("n", "<leader>fj", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>fs", "<cmd>:w<cr>")
@@ -11,7 +12,13 @@ vim.keymap.set("n", "<leader>lf", function()
 end)
 vim.keymap.set("n", "<leader>ls", "<cmd>:Mason<cr>")
 
-vim.keymap.set("n", "<leader>qq", "<cmd>:q<cr>")
+vim.keymap.set("n", "<leader>qq", function()
+  if tree_view.is_visible() then
+    tree_api.tree.close()
+  end
+  vim.cmd(":q")
+end)
+
 vim.keymap.set("n", "<leader>cr", "<cmd>%s/\\r//g<cr>")
 vim.keymap.set("n", "<leader>c/", "<cmd>let @/ = \"\"<cr>")
 
@@ -65,7 +72,6 @@ vim.keymap.set("n", "<leader>bd", function()
       vim.api.nvim_set_current_buf(BufStack._et[len - 1])
     end
   end
-
   vim.cmd(":BufDel " .. current_buff)
 end)
 
