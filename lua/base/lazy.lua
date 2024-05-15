@@ -11,13 +11,13 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
+vim.g.mapleader = " "       -- Make sure to set `mapleader` before lazy so your mappings are correct
 vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
 
 require("lazy").setup({
+  { "navarasu/onedark.nvim", lazy = false, priority = 1000 },
   "ojroques/nvim-bufdel",
   "xiyaowong/transparent.nvim",
-  "navarasu/onedark.nvim",
   "christoomey/vim-tmux-navigator",
   "lukas-reineke/indent-blankline.nvim",
   {
@@ -65,7 +65,7 @@ require("lazy").setup({
   },
   "rcarriga/nvim-notify",
   "stevearc/dressing.nvim",
-  { "kevinhwang91/nvim-bqf",           ft = 'qf' },
+  { "kevinhwang91/nvim-bqf", ft = 'qf' },
   {
     "NeogitOrg/neogit",
     dependencies = {
