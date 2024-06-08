@@ -3,7 +3,7 @@ local telescope = require('telescope')
 local sorters = require('telescope.sorters')
 
 -- Here I sort the output of the buffer window to look more like my stack
-local custom_sorter = sorters.Sorter:new {
+local bubble_stack_sorter = sorters.Sorter:new {
   scoring_function = function(entry, prompt, line)
     local number = tonumber(string.match(line, "%s*(%d+)%s*:"))
     local score = (_G.BufStack:getn() - _G.BufStack:get_index(number))
@@ -45,7 +45,7 @@ telescope.setup {
     -- Now the picker_config_key will be applied every time you call this
     -- builtin picker
     buffers = {
-      sorter = custom_sorter
+      sorter = bubble_stack_sorter
     }
   },
   extensions = {
