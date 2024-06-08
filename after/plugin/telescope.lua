@@ -14,7 +14,7 @@ local custom_sorter = sorters.Sorter:new {
     local score = (_G.BufStack:getn() - _G.BufStack:get_index(number)) * 10
     vim.print("Score " .. score)
     vim.print("---")
-    return score
+    return _G.BufStack:getn() * 1000
   end
 }
 
