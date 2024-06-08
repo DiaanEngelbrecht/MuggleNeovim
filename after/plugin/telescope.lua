@@ -7,7 +7,7 @@ local custom_sorter = sorters.Sorter:new {
   scoring_function = function(entry, prompt, line)
     local number = tonumber(string.match(line, "%s*(%d+)%s*:"))
     local score = (_G.BufStack:getn() - _G.BufStack:get_index(number))
-      * 10 + 10 + (line:lower():find(prompt:lower(), 1, true) or 100000)
+        * 10 + 10 + (line:lower():find(prompt:lower(), 1, true) or 100000)
     return score
   end
 }
@@ -99,5 +99,21 @@ end, {})
 vim.keymap.set('n', '<leader>pf', project_files, {})
 vim.keymap.set('n', '<leader>/', function() builtin.live_grep(ivy_theme) end, {})
 vim.keymap.set('n', 'g/', function() builtin.grep_string() end, {})
-vim.keymap.set('n', '<leader>bb', function() builtin.buffers() end, {})
+vim.keymap.set('n', '<leader>bb', function()
+  builtin.buffers({
+    border = true,
+    borderchars = {
+      preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+      prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+      results = { " " }
+    },
+    hidden = true,
+    layout_config = {
+      height = 15
+    },
+    layout_strategy = "bottom_pane",
+    sorting_strategy = "ascending",
+    theme = "ivy"
+  })
+end, {})
 vim.keymap.set('n', '<leader>pp', function() require 'telescope'.extensions.project.project(ivy_theme) end, {})
