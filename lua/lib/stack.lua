@@ -49,6 +49,16 @@ function BubbleStack:Create()
     return #self._et
   end
 
+
+  -- get index
+  function t:get_index(bufnr)
+    for i, p in ipairs(self._et) do
+      if p == bufnr then
+        return i
+      end
+    end
+  end
+
   -- list values
   function t:list()
     for i,v in pairs(self._et) do

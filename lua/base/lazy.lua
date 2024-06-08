@@ -68,10 +68,13 @@ require("lazy").setup({
   { "kevinhwang91/nvim-bqf", ft = 'qf' },
   {
     "NeogitOrg/neogit",
+    lazy = false,
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'sindrets/diffview.nvim'
+      'sindrets/diffview.nvim',
+       "nvim-telescope/telescope.nvim"
     },
+    config = true
   },
   { "echasnovski/mini.nvim", branch = 'stable' },
   {
