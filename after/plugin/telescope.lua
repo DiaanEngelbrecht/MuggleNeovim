@@ -64,16 +64,26 @@ telescope.setup {
 telescope.load_extension("file_browser")
 telescope.load_extension("project")
 
-local ivy_theme = require('telescope.themes').get_ivy({
-  hidden = true,
-  layout_config = {
-    height = 15,
-  }
-})
+local ivy_theme = {
+    border = true,
+    borderchars = {
+      preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+      prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+      results = { " " }
+    },
+    hidden = true,
+    layout_config = {
+      height = 15
+    },
+    layout_strategy = "bottom_pane",
+    -- sorting_strategy = "ascending", -- there seems to be a bug with this sorting strategy
+    theme = "ivy"
+  } -- define here if you want to define something
+
 
 local utils = require "telescope.utils"
 local project_files = function()
-  local opts = ivy_theme -- define here if you want to define something
+  local opts = ivy_theme
   opts["cwd"] = utils.buffer_dir()
   vim.fn.system('git rev-parse --is-inside-work-tree')
   if vim.v.shell_error == 0 then

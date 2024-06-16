@@ -15,7 +15,8 @@ vim.g.mapleader = " "       -- Make sure to set `mapleader` before lazy so your 
 vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
 
 require("lazy").setup({
-  { "navarasu/onedark.nvim", lazy = false, priority = 1000 },
+  { "navarasu/onedark.nvim",     lazy = false,  priority = 1000 },
+  { 'akinsho/git-conflict.nvim', version = "*", config = true },
   "ojroques/nvim-bufdel",
   "xiyaowong/transparent.nvim",
   "christoomey/vim-tmux-navigator",
@@ -72,7 +73,7 @@ require("lazy").setup({
     dependencies = {
       'nvim-lua/plenary.nvim',
       'sindrets/diffview.nvim',
-       "nvim-telescope/telescope.nvim"
+      "nvim-telescope/telescope.nvim"
     },
     config = true
   },
