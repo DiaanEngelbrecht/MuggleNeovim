@@ -65,12 +65,12 @@ telescope.load_extension("file_browser")
 telescope.load_extension("project")
 
 local ivy_theme = {
-    border = true,
-    borderchars = {
-      preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-      prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
-      results = { " " }
-    },
+    -- border = true,
+    -- borderchars = {
+    --   preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+    --   prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+    --   results = { " " }
+    -- },
     hidden = true,
     layout_config = {
       height = 15
