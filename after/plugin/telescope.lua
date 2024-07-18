@@ -50,7 +50,6 @@ telescope.setup {
   },
   extensions = {
     file_browser = {
-      --theme = "ivy",
       mappings = {
         ["i"] = {
           ["<C-h>"] = require "telescope".extensions.file_browser.actions.goto_parent_dir,
@@ -64,41 +63,26 @@ telescope.setup {
 telescope.load_extension("file_browser")
 telescope.load_extension("project")
 
-local ivy_theme = {
-    -- border = true,
-    -- borderchars = {
-    --   preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    --   prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
-    --   results = { " " }
-    -- },
-    hidden = true,
-    layout_config = {
-      height = 15
-    },
-    layout_strategy = "bottom_pane",
-    -- sorting_strategy = "ascending", -- there seems to be a bug with this sorting strategy
-    theme = "ivy"
-  } -- define here if you want to define something
+-- define here if you want to define something
 
+local themes = require('telescope.themes')
 
 local utils = require "telescope.utils"
 local project_files = function()
-  local opts = ivy_theme
-  opts["cwd"] = utils.buffer_dir()
   vim.fn.system('git rev-parse --is-inside-work-tree')
   if vim.v.shell_error == 0 then
-    require "telescope.builtin".git_files(opts)
+    require "telescope.builtin".git_files(themes.get_ivy({ cwd = utils.buffer_dir(), layout_config = { height = 15 } }))
   else
-    require "telescope.builtin".find_files(opts)
+    require "telescope.builtin".find_files(themes.get_ivy({ cwd = utils.buffer_dir(), layout_config = { height = 15 } }))
   end
 end
 
 local builtin = require('telescope.builtin')
 
-local themes = require('telescope.themes')
 vim.keymap.set('n', '<leader>ff', function()
   require "telescope".extensions.file_browser.file_browser(themes.get_ivy({
     hidden = true,
+    no_ignore = true,
     cwd = utils.buffer_dir(),
     layout_config = {
       height = 15,
@@ -107,23 +91,19 @@ vim.keymap.set('n', '<leader>ff', function()
 end, {})
 
 vim.keymap.set('n', '<leader>pf', project_files, {})
-vim.keymap.set('n', '<leader>/', function() builtin.live_grep(ivy_theme) end, {})
+vim.keymap.set('n', '<leader>/', function()
+  builtin.live_grep(themes.get_ivy({ layout_config = { height = 15 } }))
+end, {})
 vim.keymap.set('n', 'g/', function() builtin.grep_string() end, {})
 vim.keymap.set('n', '<leader>bb', function()
-  builtin.buffers({
-    border = true,
-    borderchars = {
-      preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-      prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
-      results = { " " }
-    },
-    hidden = true,
-    layout_config = {
-      height = 15
-    },
-    layout_strategy = "bottom_pane",
-    sorting_strategy = "ascending",
-    theme = "ivy"
-  })
+  builtin.buffers(
+    themes.get_ivy(
+      {
+        layout_config = {
+          height = 15
+        },
+        sorting_strategy = "ascending",
+      }
+    ))
 end, {})
 vim.keymap.set('n', '<leader>pp', function() require 'telescope'.extensions.project.project(ivy_theme) end, {})
