@@ -71,9 +71,31 @@ local utils = require "telescope.utils"
 local project_files = function()
   vim.fn.system('git rev-parse --is-inside-work-tree')
   if vim.v.shell_error == 0 then
-    require "telescope.builtin".git_files(themes.get_ivy({ cwd = utils.buffer_dir(), layout_config = { height = 15 } }))
+    require "telescope.builtin".git_files({
+      layout_strategy = 'bottom_pane',
+      border = true,
+      borderchars = {
+        preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+        prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+        results = { " " }
+      },
+      layout_config = {
+        height = 0.4,
+      },
+    })
   else
-    require "telescope.builtin".find_files(themes.get_ivy({ cwd = utils.buffer_dir(), layout_config = { height = 15 } }))
+    require "telescope.builtin".find_files({
+      layout_strategy = 'bottom_pane',
+      layout_config = {
+        height = 0.4,
+      },
+      border = true,
+      borderchars = {
+        preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+        prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+        results = { " " }
+      },
+    })
   end
 end
 
