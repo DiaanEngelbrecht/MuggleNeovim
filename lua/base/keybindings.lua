@@ -41,7 +41,18 @@ _G.BufStack = BubbleStack:Create()
 vim.keymap.set("n", "<leader><tab>", function()
   local len = _G.BufStack:getn()
   if len > 1 then
-    vim.api.nvim_set_current_buf(_G.BufStack._et[len - 1])
+    -- vim.print("Buffer exists: " .. vim.fn.bufexists(_G.BufStack._et[len - 1]))
+    if vim.fn.bufexists(_G.BufStack._et[len - 1]) == 1 then
+      vim.api.nvim_set_current_buf(_G.BufStack._et[len - 1])
+    else
+      _G.BufStack:remove(_G.BufStack._et[len - 1])
+      vim.print("Deleted phantom buffer")
+      len = _G.BufStack:getn()
+      if len > 1 then
+        -- Here I'm assuming I won't have more than one phantom buffer in a row
+        vim.api.nvim_set_current_buf(_G.BufStack._et[len - 1])
+      end
+    end
   end
 end, { desc = "Switch to Other Buffer" })
 
