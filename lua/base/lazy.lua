@@ -90,6 +90,79 @@ require("lazy").setup({
     dependencies = {
       'nvim-tree/nvim-web-devicons',
     },
+  },
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    build = "make", -- This is Optional, only if you want to use tiktoken_core to calculate tokens count
+    opts = {
+      -- add any opts here
+      provider = "codestral",
+      vendors = {
+        ---@type AvanteProvider
+        codestral = {
+          ["local"] = true,
+          endpoint = "127.0.0.1:1234/v1",
+          model = "lmstudio-community/Codestral-22B-v0.1-GGUF/Codestral-22B-v0.1-Q2_K.gguf",
+          parse_curl_args = function(opts, code_opts)
+            return {
+              url = opts.endpoint .. "/chat/completions",
+              headers = {
+                ["Accept"] = "application/json",
+                ["Content-Type"] = "application/json",
+              },
+              body = {
+                model = opts.model,
+                messages = require("avante.providers").copilot.parse_message(code_opts), -- you can make your own message, but this is very advanced
+                max_tokens = 8192,
+                stream = true,
+              },
+            }
+          end,
+          parse_response_data = function(data_stream, event_state, opts)
+            require("avante.providers").openai.parse_response(data_stream, event_state, opts)
+          end,
+        },
+        ---@type AvanteProvider
+        local_llama = {
+          ["local"] = true,
+          endpoint = "127.0.0.1:1234/v1",
+          model = "lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF/Meta-Llama-3-8B-Instruct-Q4_K_M.gguf",
+          parse_curl_args = function(opts, code_opts)
+            return {
+              url = opts.endpoint .. "/chat/completions",
+              headers = {
+                ["Accept"] = "application/json",
+                ["Content-Type"] = "application/json",
+              },
+              body = {
+                model = opts.model,
+                messages = require("avante.providers").copilot.parse_message(code_opts), -- you can make your own message, but this is very advanced
+                max_tokens = 8192,
+                stream = true,
+              },
+            }
+          end,
+          parse_response_data = function(data_stream, event_state, opts)
+            require("avante.providers").openai.parse_response(data_stream, event_state, opts)
+          end,
+        },
+      },
+    },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below is optional, make sure to setup it properly if you have lazy=true
+      {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
   }
 
 })

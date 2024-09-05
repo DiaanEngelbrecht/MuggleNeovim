@@ -6,9 +6,20 @@ lsp.preset('recommended')
 -- (Optional) Configure lua language server for neovim
 lsp.nvim_workspace()
 
+lsp.ensure_installed({ 'rust_analyzer', })
+
+lsp.configure('rust_analyzer', {
+  settings = {
+    ["rust-analyzer"] = {
+      checkOnSave = {
+        command = "clippy"
+      },
+    }
+  }
+})
 
 local cmp = require('cmp')
-local cmp_select = {behavior = cmp.SelectBehavior.Select}
+local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_mappings = lsp.defaults.cmp_mappings({
   ['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
   ['<C-j>'] = cmp.mapping.select_next_item(cmp_select),
@@ -19,19 +30,17 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 lsp.on_attach(function(client, bufnr)
   -- see :help lsp-zero-keybindings
   -- to learn the available actions
-  lsp.default_keymaps({buffer = bufnr})
+  lsp.default_keymaps({ buffer = bufnr })
 end)
 
 lsp.setup_nvim_cmp({
   mapping = cmp_mappings
 })
 
-lsp.setup_servers({'dartls', force = true})
+lsp.setup_servers({ 'dartls', force = true })
 
 lsp.setup()
 
-vim.keymap.set("n", "<leader>la", function ()
+vim.keymap.set("n", "<leader>la", function()
   vim.lsp.buf.code_action()
 end)
-
-
