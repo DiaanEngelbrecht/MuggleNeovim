@@ -5,6 +5,7 @@ local sorters = require('telescope.sorters')
 -- Here I sort the output of the buffer window to look more like my stack
 local bubble_stack_sorter = sorters.Sorter:new {
   scoring_function = function(entry, prompt, line)
+    -- print("Line: ", vim.inspect(line))
     local number = tonumber(string.match(line, "%s*(%d+)%s*:"))
     local score = (_G.BufStack:getn() - _G.BufStack:get_index(number))
         * 10 + 10 + (line:lower():find(prompt:lower(), 1, true) or 100000)

@@ -7,7 +7,7 @@ neogit.setup {
   disable_commit_confirmation = true,
   auto_refresh = false,
   use_telescope = true,
-  kind = "split",
+  kind = "auto",
   integrations = {
     telescope  = true,
     diffview = true

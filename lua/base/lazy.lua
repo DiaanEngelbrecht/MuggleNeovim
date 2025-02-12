@@ -28,6 +28,7 @@ require("lazy").setup({
   },
   "nvim-telescope/telescope-file-browser.nvim",
   "nvim-telescope/telescope-project.nvim",
+  { 'akinsho/toggleterm.nvim', version = "*", opts = { --[[ things you want to change go here]] } },
   "numToStr/Comment.nvim",
   "nvim-treesitter/nvim-treesitter",
   {
@@ -53,6 +54,23 @@ require("lazy").setup({
     }
   },
   {
+    "mfussenegger/nvim-lint",
+    event = { 'BufReadPre', 'BufNewFile' },
+    config = function()
+      require('lint').linters_by_ft = {
+        typescript = { 'eslint' },
+        elixir = { 'credo' },
+      }
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        callback = function()
+          require("lint").try_lint()
+        end,
+      })
+    end
+  },
+  'mhartington/formatter.nvim',
+  {
     'glepnir/dashboard-nvim',
     event = 'VimEnter',
     config = function()
@@ -66,7 +84,7 @@ require("lazy").setup({
   },
   "rcarriga/nvim-notify",
   "stevearc/dressing.nvim",
-  { "kevinhwang91/nvim-bqf", ft = 'qf' },
+  { "kevinhwang91/nvim-bqf",   ft = 'qf' },
   {
     "NeogitOrg/neogit",
     lazy = false,
@@ -82,8 +100,69 @@ require("lazy").setup({
     "nvim-lualine/lualine.nvim",
     dependencies = { 'kyazdani42/nvim-web-devicons', opt = true }
   },
-
-  "voldikss/vim-floaterm",
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-tree/nvim-tree.lua", -- optional, for file explorer integration
+      "akinsho/toggleterm.nvim", -- optional, for terminal integration
+    },
+    init = function()
+      vim.opt.laststatus = 3
+      vim.opt.splitkeep = "screen"
+    end,
+    opts = {
+      bottom = {
+        -- toggleterm / lazyterm at the bottom with a height of 40% of the screen
+        {
+          ft = "toggleterm",
+          size = { height = 0.3 },
+          title = "Terminal"
+        },
+        "Trouble",
+        { ft = "qf",            title = "QuickFix" },
+        {
+          ft = "help",
+          size = { height = 20 },
+          -- only show help buffers
+          filter = function(buf)
+            return vim.bo[buf].buftype == "help"
+          end,
+        },
+        { ft = "spectre_panel", size = { height = 0.4 } },
+      },
+      left = {
+        -- Neo-tree filesystem always takes half the screen height
+        {
+          title = "Files",
+          ft = "NvimTree",
+          size = { height = 0.5 },
+        },
+      },
+      right = {
+        -- Edgy doesn't capture all the windows of avante really nicely, so commenting out for now
+        -- Avante
+        -- {
+        --   title = "AI",
+        --   ft = "AvanteSelectedFiles",
+        --   size = { height = 0.1, width = 0.3 },
+        -- },
+        -- {
+        --   title = "AI",
+        --   ft = "Avante",
+        --   size = { height = 0.7, width = 0.3 },
+        --   open = function ()
+        --     require("edgy").close("left")
+        --   end
+        -- },
+        -- {
+        --   title = "Chat",
+        --   ft = "AvanteInput",
+        --   size = { height = 0.2, width = 0.3 },
+        -- },
+      },
+    },
+  },
   "emmanueltouzery/agitator.nvim",
   {
     "nvim-tree/nvim-tree.lua",
@@ -97,11 +176,11 @@ require("lazy").setup({
     build = "make", -- This is Optional, only if you want to use tiktoken_core to calculate tokens count
     opts = {
       -- add any opts here
-      provider = "codestral",
+      provider = "claude",
       vendors = {
         ---@type AvanteProvider
         codestral = {
-          ["local"] = true,
+          api_key_name = '',
           endpoint = "127.0.0.1:1234/v1",
           model = "lmstudio-community/Codestral-22B-v0.1-GGUF/Codestral-22B-v0.1-Q2_K.gguf",
           parse_curl_args = function(opts, code_opts)
@@ -125,7 +204,7 @@ require("lazy").setup({
         },
         ---@type AvanteProvider
         local_llama = {
-          ["local"] = true,
+          api_key_name = '',
           endpoint = "127.0.0.1:1234/v1",
           model = "lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF/Meta-Llama-3-8B-Instruct-Q4_K_M.gguf",
           parse_curl_args = function(opts, code_opts)

@@ -103,10 +103,12 @@ vim.keymap.set("n", "<leader>ft", function()
       -- do nothing
       -- maybe close here? but I'd rather learn to use q
     else
+      require('edgy').open('left')
       vim.cmd("NvimTreeFindFile")
       view.focus()
     end
   else
+    require('edgy').open('left')
     vim.cmd("NvimTreeFindFile")
     view.focus()
   end
