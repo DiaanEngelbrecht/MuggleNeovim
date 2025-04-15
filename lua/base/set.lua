@@ -8,6 +8,8 @@ vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.smartindent = true
 vim.opt.smartcase = true
+vim.opt.spelloptions = "camel"
+vim.opt.iskeyword:remove('_')
 vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
 
