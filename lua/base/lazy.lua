@@ -16,6 +16,7 @@ vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
 
 require("lazy").setup({
   { "navarasu/onedark.nvim",     lazy = false,  priority = 1000 },
+  { "mason-org/mason.nvim" },
   { 'akinsho/git-conflict.nvim', version = "*", config = true },
   "ojroques/nvim-bufdel",
   "xiyaowong/transparent.nvim",
@@ -31,28 +32,6 @@ require("lazy").setup({
   { 'akinsho/toggleterm.nvim', version = "*", opts = { --[[ things you want to change go here]] } },
   "numToStr/Comment.nvim",
   "nvim-treesitter/nvim-treesitter",
-  {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v1.x',
-    dependencies = {
-      -- LSP Support
-      { 'neovim/nvim-lspconfig' },
-      { 'williamboman/mason.nvim' },
-      { 'williamboman/mason-lspconfig.nvim' },
-
-      -- Autocompletion
-      { 'hrsh7th/nvim-cmp' },
-      { 'hrsh7th/cmp-nvim-lsp' },
-      { 'hrsh7th/cmp-buffer' },
-      { 'hrsh7th/cmp-path' },
-      { 'saadparwaiz1/cmp_luasnip' },
-      { 'hrsh7th/cmp-nvim-lua' },
-
-      -- Snippets
-      { 'L3MON4D3/LuaSnip' },
-      { 'rafamadriz/friendly-snippets' },
-    }
-  },
   {
     "mfussenegger/nvim-lint",
     event = { 'BufReadPre', 'BufNewFile' },
@@ -100,69 +79,6 @@ require("lazy").setup({
     "nvim-lualine/lualine.nvim",
     dependencies = { 'kyazdani42/nvim-web-devicons', opt = true }
   },
-  {
-    "folke/edgy.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "nvim-tree/nvim-tree.lua", -- optional, for file explorer integration
-      "akinsho/toggleterm.nvim", -- optional, for terminal integration
-    },
-    init = function()
-      vim.opt.laststatus = 3
-      vim.opt.splitkeep = "screen"
-    end,
-    opts = {
-      bottom = {
-        -- toggleterm / lazyterm at the bottom with a height of 40% of the screen
-        {
-          ft = "toggleterm",
-          size = { height = 0.3 },
-          title = "Terminal"
-        },
-        "Trouble",
-        { ft = "qf",            title = "QuickFix" },
-        {
-          ft = "help",
-          size = { height = 20 },
-          -- only show help buffers
-          filter = function(buf)
-            return vim.bo[buf].buftype == "help"
-          end,
-        },
-        { ft = "spectre_panel", size = { height = 0.4 } },
-      },
-      left = {
-        -- Neo-tree filesystem always takes half the screen height
-        {
-          title = "Files",
-          ft = "NvimTree",
-          size = { height = 0.5 },
-        },
-      },
-      right = {
-        -- Edgy doesn't capture all the windows of avante really nicely, so commenting out for now
-        -- Avante
-        -- {
-        --   title = "AI",
-        --   ft = "AvanteSelectedFiles",
-        --   size = { height = 0.1, width = 0.3 },
-        -- },
-        -- {
-        --   title = "AI",
-        --   ft = "Avante",
-        --   size = { height = 0.7, width = 0.3 },
-        --   open = function ()
-        --     require("edgy").close("left")
-        --   end
-        -- },
-        -- {
-        --   title = "Chat",
-        --   ft = "AvanteInput",
-        --   size = { height = 0.2, width = 0.3 },
-        -- },
-      },
-    },
-  },
   "emmanueltouzery/agitator.nvim",
   {
     "nvim-tree/nvim-tree.lua",
@@ -171,77 +87,71 @@ require("lazy").setup({
     },
   },
   {
-    "yetone/avante.nvim",
-    event = "VeryLazy",
-    build = "make", -- This is Optional, only if you want to use tiktoken_core to calculate tokens count
-    opts = {
-      -- add any opts here
-      provider = "claude",
-      vendors = {
-        ---@type AvanteProvider
-        codestral = {
-          api_key_name = '',
-          endpoint = "127.0.0.1:1234/v1",
-          model = "lmstudio-community/Codestral-22B-v0.1-GGUF/Codestral-22B-v0.1-Q2_K.gguf",
-          parse_curl_args = function(opts, code_opts)
-            return {
-              url = opts.endpoint .. "/chat/completions",
-              headers = {
-                ["Accept"] = "application/json",
-                ["Content-Type"] = "application/json",
-              },
-              body = {
-                model = opts.model,
-                messages = require("avante.providers").copilot.parse_message(code_opts), -- you can make your own message, but this is very advanced
-                max_tokens = 8192,
-                stream = true,
-              },
-            }
-          end,
-          parse_response_data = function(data_stream, event_state, opts)
-            require("avante.providers").openai.parse_response(data_stream, event_state, opts)
-          end,
-        },
-        ---@type AvanteProvider
-        local_llama = {
-          api_key_name = '',
-          endpoint = "127.0.0.1:1234/v1",
-          model = "lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF/Meta-Llama-3-8B-Instruct-Q4_K_M.gguf",
-          parse_curl_args = function(opts, code_opts)
-            return {
-              url = opts.endpoint .. "/chat/completions",
-              headers = {
-                ["Accept"] = "application/json",
-                ["Content-Type"] = "application/json",
-              },
-              body = {
-                model = opts.model,
-                messages = require("avante.providers").copilot.parse_message(code_opts), -- you can make your own message, but this is very advanced
-                max_tokens = 8192,
-                stream = true,
-              },
-            }
-          end,
-          parse_response_data = function(data_stream, event_state, opts)
-            require("avante.providers").openai.parse_response(data_stream, event_state, opts)
-          end,
+  "yetone/avante.nvim",
+  event = "VeryLazy",
+  version = false, -- Never set this value to "*"! Never!
+  opts = {
+    -- add any opts here
+    -- for example
+    provider = "claude",
+    auto_suggestions_provider = "claude",
+    cursor_applying_provider = nil, -- The provider used in the applying phase of Cursor Planning Mode, defaults to nil, when nil uses Config.provider as the provider for the applying phase
+    claude = {
+      endpoint = "https://api.anthropic.com",
+      model = "claude-3-5-sonnet-20241022",
+      temperature = 0,
+      max_tokens = 4096,
+    },
+    behaviour = {
+      auto_suggestions = false, -- Experimental stage
+      auto_set_highlight_group = true,
+      auto_set_keymaps = true,
+      auto_apply_diff_after_generation = false,
+      support_paste_from_clipboard = false,
+      minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+      enable_token_counting = true, -- Whether to enable token counting. Default to true.
+    },
+  },
+  -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  build = "make",
+  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+  dependencies = {
+    "nvim-treesitter/nvim-treesitter",
+    "stevearc/dressing.nvim",
+    "nvim-lua/plenary.nvim",
+    "MunifTanjim/nui.nvim",
+    --- The below dependencies are optional,
+    "echasnovski/mini.pick", -- for file_selector provider mini.pick
+    "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+    "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+    "ibhagwan/fzf-lua", -- for file_selector provider fzf
+    "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+    "zbirenbaum/copilot.lua", -- for providers='copilot'
+    {
+      -- support for image pasting
+      "HakonHarnes/img-clip.nvim",
+      event = "VeryLazy",
+      opts = {
+        -- recommended settings
+        default = {
+          embed_image_as_base64 = false,
+          prompt_for_file_name = false,
+          drag_and_drop = {
+            insert_mode = true,
+          },
+          -- required for Windows users
+          use_absolute_path = true,
         },
       },
     },
-    dependencies = {
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below is optional, make sure to setup it properly if you have lazy=true
-      {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          file_types = { "markdown", "Avante" },
-        },
-        ft = { "markdown", "Avante" },
+    {
+      -- Make sure to set this up properly if you have lazy=true
+      'MeanderingProgrammer/render-markdown.nvim',
+      opts = {
+        file_types = { "markdown", "Avante" },
       },
+      ft = { "markdown", "Avante" },
     },
-  }
-
+  },
+}
 })
