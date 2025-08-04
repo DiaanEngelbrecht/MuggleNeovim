@@ -15,6 +15,13 @@ vim.g.mapleader = " "       -- Make sure to set `mapleader` before lazy so your 
 vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
 
 require("lazy").setup({
+    -- TODO: consider using blink in the future
+    -- {
+    --   'saghen/blink.cmp',
+    --   -- optional: provides snippets for the snippet source
+    --   dependencies = { 'rafamadriz/friendly-snippets' },
+    -- },
+  'neovim/nvim-lspconfig',
   { "navarasu/onedark.nvim",     lazy = false,  priority = 1000 },
   { "mason-org/mason.nvim" },
   { 'akinsho/git-conflict.nvim', version = "*", config = true },
