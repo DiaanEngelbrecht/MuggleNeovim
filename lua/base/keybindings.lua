@@ -1,7 +1,6 @@
 require("lib.stack")
 
 local tree_api = require("nvim-tree.api")
-local tree_view = require("nvim-tree.view")
 
 local function run_code()
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
@@ -74,7 +73,7 @@ vim.keymap.set("n", "<leader>lf", "<cmd>:Format<cr>")
 vim.keymap.set("n", "<leader>ls", "<cmd>:Mason<cr>")
 
 vim.keymap.set("n", "<leader>qq", function()
-  if tree_view.is_visible() then
+  if tree_api.tree.is_visible() then
     tree_api.tree.close()
   end
   vim.cmd(":q")

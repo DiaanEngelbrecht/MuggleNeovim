@@ -95,21 +95,20 @@ local config = {
   }
 }
 
-local view = require("nvim-tree.view")
 
 vim.keymap.set("n", "<leader>ft", function()
-  if view.is_visible() then
-    if view.get_winnr() == vim.api.nvim_get_current_win() then
-      -- do nothing
-      -- maybe close here? but I'd rather learn to use q
-    else
-      vim.cmd("NvimTreeFindFile")
-      view.focus()
-    end
-  else
-    vim.cmd("NvimTreeFindFile")
-    view.focus()
+  local api = require("nvim-tree.api")
+  local current_buf = vim.api.nvim_get_current_buf()
+
+  -- Check if the current buffer is an nvim-tree buffer.
+  if api.tree.is_tree_buf(current_buf) then
+    -- If we are in the tree, do nothing, just as you intended.
+    return
   end
-end)
+
+  -- If we are not in the tree, find the current file.
+  -- This command opens the tree if needed and focuses it.
+  vim.cmd("NvimTreeFindFile")
+end, { desc = "NvimTree: Find File & Focus" })
 
 require('nvim-tree').setup(config)
