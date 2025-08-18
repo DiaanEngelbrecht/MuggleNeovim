@@ -21,33 +21,6 @@ end
 -- Reserve a space in the gutter
 vim.opt.signcolumn = 'yes'
 
--- vim.lsp.config('rust_analyzer', {
---   settings = {
---     ["rust-analyzer"] = {
---       cargo = {
---         -- cfgs = {}
---         features = {"feature1", "feature2", "feature3"},
---       },
---       check = {
---         command = "clippy",
---         features = "all",
---         allTargets = true,
---       },
---       diagnostics = {
---         styleLints = { enable = true }
---       },
---       procMacro = {
---         enable = true,
---         ignored = {
---           ["async-trait"] = { "async_trait" },
---           ["napi-derive"] = { "napi" },
---           ["async-recursion"] = { "async_recursion" },
---         },
---       },
---     },
---   },
--- })
-
 -- Special lualsp config with the new.
 vim.lsp.config('luals', {
   on_init = function(client)
@@ -98,7 +71,7 @@ vim.lsp.config('luals', {
   }
 })
 
-vim.lsp.enable({'rust_analyzer', 'ts_ls', 'luals', 'svelte'})
+vim.lsp.enable({'rust_analyzer', 'ts_ls', 'eslint', 'luals', 'svelte'})
 
 -- This is where you enable features that only work
 -- if there is a language server active in the file
