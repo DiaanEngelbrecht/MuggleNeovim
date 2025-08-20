@@ -105,28 +105,53 @@ end)
 _G.BufStack = BubbleStack:Create()
 
 vim.keymap.set("n", "<leader><tab>", function()
-  local len = _G.BufStack:getn()
-  if len > 1 then
-    -- vim.print("Buffer exists: " .. vim.fn.bufexists(_G.BufStack._et[len - 1]))
-    if vim.fn.bufexists(_G.BufStack._et[len - 1]) == 1 then
-      vim.api.nvim_set_current_buf(_G.BufStack._et[len - 1])
-    else
-      _G.BufStack:remove(_G.BufStack._et[len - 1])
-      vim.print("Deleted phantom buffer")
-      len = _G.BufStack:getn()
-      if len > 1 then
-        -- Here I'm assuming I won't have more than one phantom buffer in a row
-        vim.api.nvim_set_current_buf(_G.BufStack._et[len - 1])
-      end
-    end
+  _G.BufStack:cleanup_phantoms()
+  local visible_buffers = _G.BufStack:get_visible_buffers()
+  
+  if #visible_buffers > 0 then
+    -- Switch to most recent buffer (first in visible_buffers)
+    vim.api.nvim_set_current_buf(visible_buffers[1])
+  else
+    vim.notify("No other buffers in stack", vim.log.levels.INFO)
   end
 end, { desc = "Switch to Other Buffer" })
 
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   callback = function(args)
-    -- vim.print("Entering buffer number " .. args.buf .. " buffer type is " .. vim.bo[args.buf].buftype)
-    if vim.fn.buflisted(args.buf) == 1 and vim.bo[args.buf].buftype == "" then
-      -- vim.print("Pushing buffer")
+    local buftype = vim.bo[args.buf].buftype
+    local filetype = vim.bo[args.buf].filetype
+    local bufname = vim.api.nvim_buf_get_name(args.buf)
+    
+    -- Exclude special buffers and plugin buffers
+    local excluded_filetypes = {
+      "help", "qf", "fugitive", "git", "gitcommit", "gitrebase",
+      "NvimTree", "telescope", "TelescopePrompt", "toggleterm",
+      "netrw", "mason", "lazy", "lspinfo"
+    }
+    
+    local excluded_buftypes = {
+      "help", "quickfix", "terminal", "prompt", "nofile", "acwrite"
+    }
+    
+    local excluded_patterns = {
+      "^fugitive://", "^term://", "^NvimTree", "^toggleterm"
+    }
+    
+    -- Check exclusions
+    for _, ft in ipairs(excluded_filetypes) do
+      if filetype == ft then return end
+    end
+    
+    for _, bt in ipairs(excluded_buftypes) do
+      if buftype == bt then return end
+    end
+    
+    for _, pattern in ipairs(excluded_patterns) do
+      if bufname:match(pattern) then return end
+    end
+    
+    -- Only add normal, listed buffers to stack
+    if vim.fn.buflisted(args.buf) == 1 and buftype == "" then
       _G.BufStack:push_bubble(args.buf)
     end
   end,
@@ -138,6 +163,13 @@ vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
       -- vim.print("Leaving buffer: " .. vim.inspect(args.buf))
       _G.BufStack:remove(args.buf)
     end
+  end,
+})
+
+-- Cleanup phantom buffers on buffer enter
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  callback = function()
+    _G.BufStack:cleanup_phantoms()
   end,
 })
 

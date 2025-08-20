@@ -65,5 +65,30 @@ function BubbleStack:Create()
       print(i, v)
     end
   end
+  
+  -- clean up phantom buffers
+  function t:cleanup_phantoms()
+    local valid_buffers = {}
+    for _, buf in ipairs(self._et) do
+      if vim.fn.bufexists(buf) == 1 and vim.fn.buflisted(buf) == 1 then
+        table.insert(valid_buffers, buf)
+      end
+    end
+    self._et = valid_buffers
+  end
+  
+  -- get visible buffers from stack (excluding current)
+  function t:get_visible_buffers()
+    self:cleanup_phantoms()
+    local current_buf = vim.api.nvim_get_current_buf()
+    local visible = {}
+    for i = #self._et, 1, -1 do
+      if self._et[i] ~= current_buf then
+        table.insert(visible, self._et[i])
+      end
+    end
+    return visible
+  end
+  
   return t
 end

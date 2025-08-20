@@ -5,11 +5,29 @@ local sorters = require('telescope.sorters')
 -- Here I sort the output of the buffer window to look more like my stack
 local bubble_stack_sorter = sorters.Sorter:new {
   scoring_function = function(entry, prompt, line)
-    -- print("Line: ", vim.inspect(line))
     local number = tonumber(string.match(line, "%s*(%d+)%s*:"))
-    local score = (_G.BufStack:getn() - _G.BufStack:get_index(number))
-        * 10 + 10 + (line:lower():find(prompt:lower(), 1, true) or 100000)
-    return score
+    if not number then return 100000 end
+    
+    -- Exclude current buffer from the list
+    local current_buf = vim.api.nvim_get_current_buf()
+    if number == current_buf then
+      return 100000 -- High score to exclude from results
+    end
+    
+    local stack_index = _G.BufStack:get_index(number)
+    local stack_size = _G.BufStack:getn()
+    
+    -- If buffer is not in stack, give it a low priority
+    if not stack_index then
+      return 50000 + (line:lower():find(prompt:lower(), 1, true) or 10000)
+    end
+    
+    -- Calculate score: higher stack position = lower score (better ranking)
+    -- Most recent buffers (higher index) get lower scores
+    local position_score = (stack_size - stack_index) * 10
+    local search_score = line:lower():find(prompt:lower(), 1, true) or 1000
+    
+    return position_score + search_score
   end
 }
 
