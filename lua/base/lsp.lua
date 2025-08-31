@@ -71,6 +71,51 @@ vim.lsp.config('luals', {
   }
 })
 
+-- Configure rust_analyzer with proper settings for macro expansion
+vim.lsp.config('rust_analyzer', {
+  cmd = { "rust-analyzer" },
+  capabilities = {
+    experimental = { serverStatusNotification = true },
+  },
+  filetypes = { "rust" },
+  root_markers = { "Cargo.toml", "Cargo.lock", "build.rs" },
+  settings = {
+    ["rust-analyzer"] = {
+      check = {
+        command = "clippy",
+        features = "all",
+        allTargets = true,
+      },
+      diagnostics = {
+        styleLints = { enable = true }
+      },
+      procMacro = {
+        enable = true,
+        attributes = {
+          enable = true,
+        },
+        -- Important: ensure proc macros are not ignored
+        ignored = {},
+      },
+      -- Cargo settings to ensure all features are enabled
+      cargo = {
+        features = "all",
+        buildScripts = {
+          enable = true,
+        },
+      },
+      -- Add workspace loading settings
+      workspace = {
+        symbol = {
+          search = {
+            kind = "all_symbols",
+          },
+        },
+      },
+    },
+  },
+})
+
 vim.lsp.enable({'rust_analyzer', 'ts_ls', 'eslint', 'luals', 'svelte'})
 
 -- This is where you enable features that only work

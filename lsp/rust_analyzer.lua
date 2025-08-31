@@ -1,10 +1,11 @@
 ---@type vim.lsp.Config
 return {
-  cmd = { "rust-analyzer" },
+  -- Explicitly use the rustup-managed rust-analyzer instead of Mason's
+  cmd = { vim.fn.expand("~/.cargo/bin/rust-analyzer") },
   capabilities = {
     experimental = { serverStatusNotification = true },
   },
-  filetypes = { "rust", "toml.Cargo" },
+  filetypes = { "rust" },
   root_markers = { "Cargo.toml", "Cargo.lock", "build.rs" },
   -- See more: https://rust-analyzer.github.io/book/configuration.html
   settings = {
@@ -19,11 +20,17 @@ return {
       },
       procMacro = {
         enable = true,
-        -- ignored = {
-        --   ["async-trait"] = { "async_trait" },
-        --   ["napi-derive"] = { "napi" },
-        --   ["async-recursion"] = { "async_recursion" },
-        -- },
+        attributes = {
+          enable = true,
+        },
+        -- Make sure no macros are ignored
+        ignored = {},
+      },
+      cargo = {
+        features = "all",
+        buildScripts = {
+          enable = true,
+        },
       },
     },
   },
