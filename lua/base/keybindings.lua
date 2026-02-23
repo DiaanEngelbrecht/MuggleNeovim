@@ -73,18 +73,12 @@ vim.keymap.set("n", "<leader>lf", function()
     local filetype = vim.bo.filetype
 
     if filetype == "rust" then
-        -- 2. If it's a Rust file, call the LSP formatter (rust-analyzer)
-        -- The LSP is asynchronous by default, so it won't block Neovim.
+        -- If it's a Rust file, call the LSP formatter (rust-analyzer)
         vim.lsp.buf.format()
-
-    elseif require("formatter").can_format_file(filetype) then
-        -- 3. If formatter.nvim supports this file type, call its command
-        -- This covers your non-Rust files (typescript, json, toml, etc.)
-        vim.cmd("Format")
-
     else
-        -- Optional: Provide feedback if no formatter is found
-        print("No formatter found for filetype: " .. filetype)
+        -- For all other files, try formatter.nvim
+        -- It will handle files based on the configuration in formatter.lua
+        vim.cmd("Format")
     end
 end, { desc = "Format File (LSP or Formatter.nvim)" })
 vim.keymap.set("n", "<leader>ls", "<cmd>:Mason<cr>")

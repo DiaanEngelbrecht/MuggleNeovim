@@ -25,6 +25,9 @@ require("formatter").setup {
     toml = {
       require("formatter.filetypes.toml").taplo,
     },
+    sql = {
+      require("formatter.filetypes.sql").pgformat,
+    },
 
     -- Use the special "*" filetype for defining formatter configurations on
     -- any filetype
