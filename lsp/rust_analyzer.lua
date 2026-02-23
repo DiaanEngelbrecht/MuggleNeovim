@@ -10,6 +10,9 @@ return {
   -- See more: https://rust-analyzer.github.io/book/configuration.html
   settings = {
     ["rust-analyzer"] = {
+      cargo = {
+        features = "all",
+      },
       check = {
         command = "clippy",
         features = "all",

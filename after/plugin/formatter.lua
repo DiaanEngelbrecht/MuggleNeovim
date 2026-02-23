@@ -19,9 +19,6 @@ require("formatter").setup {
     python = {
       require("formatter.filetypes.python").autopep8,
     },
-    rust = {
-      require("formatter.filetypes.rust").rustfmt,
-    },
     svelte = {
       require("formatter.filetypes.svelte").prettier,
     },

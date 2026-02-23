@@ -94,23 +94,28 @@ require("lazy").setup({
     },
   },
   {
+    dir = "/Users/diaan/repos/buckety",
+    name = "buckety",
+    lazy = false,
+    dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
+  },
+  {
   "yetone/avante.nvim",
   event = "VeryLazy",
   version = false, -- Never set this value to "*"! Never!
   opts = {
-    provider = "claude",
-    auto_suggestions_provider = "claude",
-    cursor_applying_provider = nil,
-    providers = {
-      claude = {
-        endpoint = "https://api.anthropic.com",
-        model = "claude-3-7-sonnet-20250219",
-        extra_request_body = {
-          temperature = 0,
-          max_tokens = 4096,
-        }
-      },
-    },
+    provider = "claude-code",
+    auto_suggestions_provider = "claude-code",
+    -- providers = {
+    --   claude = {
+    --     endpoint = "https://api.anthropic.com",
+    --     model = "claude-3-7-sonnet-20250219",
+    --     extra_request_body = {
+    --       temperature = 0,
+    --       max_tokens = 4096,
+    --     }
+    --   },
+    -- },
     behaviour = {
       auto_suggestions = false, -- Experimental stage
       auto_set_highlight_group = true,
@@ -120,6 +125,17 @@ require("lazy").setup({
       minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
       enable_token_counting = true, -- Whether to enable token counting. Default to true.
     },
+    acp_providers = {
+      ["claude-code"] = {
+        command = "npx",
+        args = { "@zed-industries/claude-code-acp" },
+        env = {
+          NODE_NO_WARNINGS = "1",
+          HOME = vim.fn.getenv('HOME')
+          -- ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY"),
+        },
+      }
+    }
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = "make",

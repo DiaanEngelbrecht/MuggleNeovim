@@ -63,13 +63,30 @@ vim.keymap.set("n", "<leader>bs", "<cmd>:Scratch<cr>")
 vim.keymap.set("n", "<leader>fj", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>fs", "<cmd>:w<cr>")
 
--- Shortcuts to very quickly edit 
+-- Shortcuts to very quickly edit
 vim.keymap.set("n", "<leader>eb", "<cmd>:e ~/.zshrc<cr>")
 vim.keymap.set("n", "<leader>es", "<cmd>:e ~/.ssh/config<cr>")
 vim.keymap.set("n", "<leader>eh", "<cmd>:e ~/.ssh/known_hosts<cr>")
 
 vim.keymap.set("n", "<leader>ll", "<cmd>:LspInfo<cr>")
-vim.keymap.set("n", "<leader>lf", "<cmd>:Format<cr>")
+vim.keymap.set("n", "<leader>lf", function()
+    local filetype = vim.bo.filetype
+
+    if filetype == "rust" then
+        -- 2. If it's a Rust file, call the LSP formatter (rust-analyzer)
+        -- The LSP is asynchronous by default, so it won't block Neovim.
+        vim.lsp.buf.format()
+
+    elseif require("formatter").can_format_file(filetype) then
+        -- 3. If formatter.nvim supports this file type, call its command
+        -- This covers your non-Rust files (typescript, json, toml, etc.)
+        vim.cmd("Format")
+
+    else
+        -- Optional: Provide feedback if no formatter is found
+        print("No formatter found for filetype: " .. filetype)
+    end
+end, { desc = "Format File (LSP or Formatter.nvim)" })
 vim.keymap.set("n", "<leader>ls", "<cmd>:Mason<cr>")
 
 vim.keymap.set("n", "<leader>qq", function()
@@ -107,7 +124,7 @@ _G.BufStack = BubbleStack:Create()
 vim.keymap.set("n", "<leader><tab>", function()
   _G.BufStack:cleanup_phantoms()
   local visible_buffers = _G.BufStack:get_visible_buffers()
-  
+
   if #visible_buffers > 0 then
     -- Switch to most recent buffer (first in visible_buffers)
     vim.api.nvim_set_current_buf(visible_buffers[1])
@@ -121,35 +138,35 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
     local buftype = vim.bo[args.buf].buftype
     local filetype = vim.bo[args.buf].filetype
     local bufname = vim.api.nvim_buf_get_name(args.buf)
-    
+
     -- Exclude special buffers and plugin buffers
     local excluded_filetypes = {
       "help", "qf", "fugitive", "git", "gitcommit", "gitrebase",
       "NvimTree", "telescope", "TelescopePrompt", "toggleterm",
       "netrw", "mason", "lazy", "lspinfo"
     }
-    
+
     local excluded_buftypes = {
       "help", "quickfix", "terminal", "prompt", "nofile", "acwrite"
     }
-    
+
     local excluded_patterns = {
       "^fugitive://", "^term://", "^NvimTree", "^toggleterm"
     }
-    
+
     -- Check exclusions
     for _, ft in ipairs(excluded_filetypes) do
       if filetype == ft then return end
     end
-    
+
     for _, bt in ipairs(excluded_buftypes) do
       if buftype == bt then return end
     end
-    
+
     for _, pattern in ipairs(excluded_patterns) do
       if bufname:match(pattern) then return end
     end
-    
+
     -- Only add normal, listed buffers to stack
     if vim.fn.buflisted(args.buf) == 1 and buftype == "" then
       _G.BufStack:push_bubble(args.buf)
