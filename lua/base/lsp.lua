@@ -93,9 +93,7 @@ vim.lsp.config('rust_analyzer', {
         enable = true,
         attributes = {
           enable = true,
-        },
-        -- Important: ensure proc macros are not ignored
-        ignored = {},
+        }
       },
       -- Cargo settings to ensure all features are enabled
       cargo = {

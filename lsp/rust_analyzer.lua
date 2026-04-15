@@ -25,9 +25,7 @@ return {
         enable = true,
         attributes = {
           enable = true,
-        },
-        -- Make sure no macros are ignored
-        ignored = {},
+        }
       },
       cargo = {
         features = "all",
